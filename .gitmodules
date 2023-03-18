@@ -1,0 +1,3 @@
+[submodule "src-tauri/big_file_to_parts"]
+	path = src-tauri/big_file_to_parts
+	url = https://github.com/Rev1le/big_file_to_parts
