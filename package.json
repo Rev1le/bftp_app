@@ -5,9 +5,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "tauri":"tauri",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-brands-svg-icons": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@tauri-apps/api": "1.2.0",
+    "@tauri-apps/cli": "^1.2.3",
     "vue": "^3.2.47"
   },
   "devDependencies": {
