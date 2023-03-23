@@ -45,5 +45,10 @@ select {
   color: #5989e9;
   text-align: center;
 }
+option{
+  display: flex;
+  /* text-align: center; */
+  align-items: center;
+}
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="settings">
+  <div class="settings" :style="{'background': 'linear-gradient(to top right, white, rgba(89, 137, 233, '+ getOpacity +'))'}">
     <div class="settings-part">
       <mySelect :options="options" v-model="dimension"></mySelect>
       
@@ -33,9 +33,13 @@
 <script>
 import mySelect from "./mySelect.vue";
 import { open } from "@tauri-apps/api/dialog";
+import { invoke } from '@tauri-apps/api'
 export default {
   components: {
     mySelect,
+  },
+  props:{
+    fileName:'',
   },
   data() {
     return {
@@ -71,9 +75,10 @@ export default {
     },
     async confrimSettings() {
       if (!this.dimension) {
-        console.log(this.partWeight * 1024 * 1024);
+        console.log(this.partWeight * 1024 * 1024, this.fileName);
+        await invoke("encode_file",{filePath:this.fileName,pathForSave:this.newDirectory})
       } else {
-        console.log(this.partWeight * 1024 * 1024 * 1024);
+        console.log(this.partWeight * 1024 * 1024 * 1024, this.fileName);
       }
     },
   },
@@ -85,21 +90,18 @@ export default {
         return this.newDirectory;
       }
     },
-    // getNewGradient() {
-    //   let gradient;
-    //   if (!this.dimension && this.partWeight !== 0) {
-    //     gradient = `linear-gradient(to right, white, rgb(0,0,${
-    //       this.partWeight/4 - 1
-    //     }));`;
-    //   } else if (this.partWeight !== 0) {
-    //     gradient = `linear-gradient(to right, white, rgb(0,0,${
-    //       this.partWeight * 25.5
-    //     }));`;
-    //   } else {
-    //     gradient = `linear-gradient(to right, white , rgb(0,0,0));`;
-    //   }
-    //   return gradient;
-    // },
+    getOpacity(){
+      if(!this.dimension && this.partWeight !== 0){
+        return this.partWeight/1024 -0.4
+      }
+      else if (this.partWeight !== 0) {
+        return this.partWeight/10 -0.4
+      }
+      else {
+        return 0
+      }
+    },
+  
   },
   watch: {
     dimension(val) {
@@ -120,11 +122,12 @@ export default {
   width: 100%;
   height: 100%;
   max-height: 500px;
-  /* background-image: linear-gradient(to right, white , rgb(0,0,60)); */
+  
+  
 }
-/* .settings *{
-    margin-bottom: 15px;
-} */
+.settings > *, .part-text, .part-text-big, .v-select, span{
+    background: none;
+}
 .settings-part {
   font-size: 1.4em;
 }
@@ -139,6 +142,7 @@ export default {
 .part-text-big {
   font-size: 4em;
   line-height: 80px;
+  color:#5989e9;
 }
 .settings-newPath,
 .settings-confrim {

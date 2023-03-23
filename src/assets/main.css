@@ -12,8 +12,14 @@
        -moz-user-select: none; /* Old versions of Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none;
-    
 }
+
+.pad{
+  width: 100%;
+height: calc(100vh - 50px);
+padding: 20px;
+}
+
 button {
     padding: 8px 12px;
     font-size: 15px;
@@ -23,4 +29,17 @@ button {
     border-radius: 50px;
     cursor: pointer;
     border: none;
+  }
+
+  .upload-file-wrap,.options-wrap {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 48%;
+  }
+  @media (max-width: 900px) {
+    .upload-file-wrap,
+    .options-wrap {
+      width: 100%;
+    }
   }
