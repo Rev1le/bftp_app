@@ -5,7 +5,11 @@
       :iconDrop="iconDrop"
       @openFile="openFile"
     ></dragAndDropItem>
-    <div class="files" :class="{ 'active-files': iconDrop }" :style="[iconDrop? {minHeight:25+'px'} : {height:0}]">
+    <div
+      class="files"
+      :class="{ 'active-files': iconDrop }"
+      :style="[iconDrop ? { minHeight: 25 + 'px' } : { height: 0 }]"
+    >
       <font-awesome-icon class="upload-icon-drop" :icon="['far', 'file']" />
       <span class="upload-icon-drop">{{ fileName }}</span>
       <font-awesome-icon
@@ -23,11 +27,18 @@ import dragAndDropItem from "./dragAndDropItem.vue";
 import dAndDMix from "../mixins/dAndDMix";
 
 export default {
-  mixins:[dAndDMix],
+  mixins: [dAndDMix],
   components: {
     dragAndDropItem,
   },
+  methods: {
+    dropFile(event) {
+      this.toggleActive();
+      this.iconDrop = true;
+      this.fileName = event.payload[0];
+    },
  
+  },
 };
 </script>
 
@@ -38,7 +49,6 @@ export default {
   align-items: flex-start;
 }
 .files * {
-
   margin-right: 10px;
 }
 .active-files .upload-icon-drop {
