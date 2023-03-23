@@ -1,6 +1,12 @@
 import { listen as tauriListen } from "@tauri-apps/api/event";
 import { open } from "@tauri-apps/api/dialog";
 export default{
+    props:{
+      fileName : {
+        type: String,
+        default:"",
+      },
+    },
     data() {
         return {
           active: false,
@@ -22,7 +28,7 @@ export default{
           this.toggleActive();
           this.iconDrop = true;
           this.fileName = event.payload[0];
-          this.$emit("setFileName", this.fileName)
+          this.$emit("update:fileName", this.fileName)
         },
         async openFile() {
           const openedFile = await open({
@@ -30,7 +36,7 @@ export default{
           });
           this.iconDrop = true;
           this.fileName = openedFile;
-          this.$emit("setFileName", this.fileName)
+          this.$emit("update:fileName", this.fileName)
         },
       },
       async mounted() {

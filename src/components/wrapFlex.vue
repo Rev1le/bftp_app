@@ -1,6 +1,6 @@
 <template>
   <div class="wrap-grid pad">
-    <dragAndDrop @setFileName="setFileName"></dragAndDrop>
+    <dragAndDrop v-model:fileName="fileName" @setFileName="setFileName"></dragAndDrop>
     <div class="options-wrap">
       <settingsFile :fileName="fileName"></settingsFile>
     </div>
@@ -18,14 +18,17 @@ export default {
   },
   data(){
     return{
-        fileName : '',
+        fileName : {
+          type: String,
+          default:"",
+        },
     }
   },
   methods:{
-    setFileName(newName){
-        console.log(newName);
-        this.fileName = newName;
-    }
+    // setFileName(newName){
+    //     console.log(newName);
+    //     this.fileName = newName;
+    // }
   }
 };
 </script>

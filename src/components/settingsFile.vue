@@ -76,7 +76,7 @@ export default {
     async confrimSettings() {
       if (!this.dimension) {
         console.log(this.partWeight * 1024 * 1024, this.fileName);
-        await invoke("encode_file",{filePath:this.fileName,pathForSave:this.newDirectory})
+        
       } else {
         console.log(this.partWeight * 1024 * 1024 * 1024, this.fileName);
       }
