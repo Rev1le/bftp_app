@@ -1,27 +1,60 @@
 <template>
   <div class="pad join" style="">
     <div class="conten-center">
-      <dragAndDrop></dragAndDrop>
+      <dragAndDrop v-model:fileName="fileName"></dragAndDrop>
     </div>
-    <button>Собрать файл!</button>
+    <twoButtons
+      btnOne="Выберете директорию"
+      btnTwo="Собрать файл!"
+      :callbackOne="newDirFile"
+      :callbackTwo="joinFileByMeta"
+      :getNewDirectory="this.getNewDirectory"
+    ></twoButtons>
+ 
   </div>
 </template>
 
 <script>
-import dragAndDrop from "../components/dragAndDropMeta.vue";
+import dragAndDrop from "../components/dragAndDrop.vue";
+import twoButtons from "../components/twoButtons.vue";
+import ButtonsMix from '../mixins/ButtonsMix'
+
+import { invoke } from "@tauri-apps/api";
 export default {
+  mixins:[ButtonsMix],
   components: {
     dragAndDrop,
+    twoButtons
+  },
+  data() {
+    return {
+      fileName: "",
+      isLoading : false,
+    };
+  },
+  methods: {
+    async joinFileByMeta() {
+      this.isLoading = true;
+      await invoke("decode_file", {
+        filePath: this.fileName,
+        pathForSave: this.getNewDirectory,
+      }).then(()=>{
+        this.isLoading = false;
+        alert("процесс завершён");
+      });
+    },
+    
   },
 };
 </script>
 
 <style scoped>
+
 .conten-center {
   display: flex;
   align-items: stretch;
   justify-content: center;
-  height: 90%;
+  height: 80%;
   width: 100%;
 }
 

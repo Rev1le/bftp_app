@@ -32,11 +32,7 @@ export default {
     dragAndDropItem,
   },
   methods: {
-    dropFile(event) {
-      this.toggleActive();
-      this.iconDrop = true;
-      this.fileName = event.payload[0];
-    },
+   
  
   },
 };

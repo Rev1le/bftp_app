@@ -18,7 +18,7 @@ export default{
     
         closeFile() {
           this.iconDrop = false;
-          this.fileName = "";
+          this.$emit("update:fileName", "");
         },
         dropFile(event) {
           this.toggleActive();
