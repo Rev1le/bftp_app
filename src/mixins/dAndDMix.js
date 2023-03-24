@@ -30,8 +30,11 @@ export default{
           const openedFile = await open({
             multiple: false,
           });
-          this.iconDrop = true;
-          this.$emit("update:fileName", openedFile)
+          if(openedFile!=null){
+            this.iconDrop = true;
+            this.$emit("update:fileName", openedFile)
+          }
+          
         },
       },
       async mounted() {

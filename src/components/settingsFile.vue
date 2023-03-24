@@ -8,6 +8,7 @@
         '))',
     }"
   >
+    
     <div class="settings-part">
       <mySelect :options="options" v-model="dimension"></mySelect>
 
@@ -33,20 +34,21 @@
       :callbackTwo="confrimSettings"
       :getNewDirectory="this.getNewDirectory"
     ></twoButtons>
-
   </div>
 </template>
 
 <script>
 import mySelect from "./mySelect.vue";
-import ButtonsMix from '../mixins/ButtonsMix'
+import ButtonsMix from "../mixins/ButtonsMix";
 import { invoke } from "@tauri-apps/api";
 import twoButtons from "./twoButtons.vue";
+
 export default {
-  mixins:[ButtonsMix],
+  mixins: [ButtonsMix],
   components: {
     mySelect,
     twoButtons,
+   
   },
   props: {
     fileName: "",
@@ -75,45 +77,50 @@ export default {
     };
   },
   methods: {
-    
     async confrimSettings() {
       if (this.partWeight) {
-        if (!this.dimension) {
+        if (
+          this.dimension == 0 &&
+          this.fileName != "" &&
+          this.getNewDirectory
+        ) {
+          this.$emit("showModal");
           await invoke("encode_file", {
             filePath: this.fileName,
             pathForSave: this.getNewDirectory,
-          }).finally(()=>{
-            // this.$emit("update:fileName", '')
-            this.newDirectory = '';
+          }).finally(() => {
+            this.$emit("update:fileName", '')
+            this.$emit("showModal");
+            this.newDirectory = "";
             this.partWeight = 0;
-          }
-          );
+          });
 
           console.log(this.partWeight * 1024 * 1024, this.fileName);
-        } else {
+        } else if (this.fileName != "" && this.getNewDirectory) {
           console.log(this.partWeight * 1024 * 1024 * 1024, this.fileName);
+        } else {
+          alert("Заполните все поля");
         }
       } else {
-        alert("Часть должная быть больше нуля!");
+        alert("Часть должна быть больше нуля!");
       }
     },
   },
   computed: {
-    
     getOpacity() {
       if (this.dimension == 0) {
         return this.partWeight / 1024 - 0.3;
       } else if (this.dimension != 0) {
         return this.partWeight / 10 - 0.3;
-      } else {
-        return 0;
-      }
+      } 
+      return 0;
+  
     },
   },
   watch: {
     dimension(val) {
       this.partWeight = 0;
-      // console.log("выбор ",this.dimension,this.partWeight,"WATCH")
+     
     },
   },
 };

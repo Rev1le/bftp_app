@@ -27,6 +27,16 @@ export default {
   components: {
     dragAndDropItem,
   },
+  watch:{
+    fileName(val){
+      if (val!=""){
+        this.iconDrop=true;
+      }
+      else{
+        this.iconDrop=false;
+      }
+    }
+  }
  
 };
 </script>

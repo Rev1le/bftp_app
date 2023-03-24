@@ -1,13 +1,17 @@
 <template>
   <div class="wrap-grid pad">
+    <MyDialog :show="isLoading">
+      <h1 style="text-align: center;">Файл разбивается, пожалуйста подождите. <br />(►__◄)</h1>
+    </MyDialog>
     <dragAndDrop v-model:fileName="fileName" ></dragAndDrop>
     <div class="options-wrap">
-      <settingsFile :fileName="fileName"></settingsFile>
+      <settingsFile v-model:fileName="fileName" @showModal="showModal"></settingsFile>
     </div>
   </div>
 </template>
 
 <script>
+import MyDialog from "./MyDialog.vue";
 import dragAndDrop from "./dragAndDrop.vue";
 import settingsFile from "./settingsFile.vue";
 export default {
@@ -15,6 +19,7 @@ export default {
   components: {
     dragAndDrop,
     settingsFile,
+    MyDialog,
   },
   data(){
     return{
@@ -22,10 +27,13 @@ export default {
           type: String,
           default:"",
         },
+        isLoading : false,
     }
   },
   methods:{
-
+    showModal(){
+      this.isLoading = !this.isLoading;
+    }
   }
 };
 </script>
