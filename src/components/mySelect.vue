@@ -17,9 +17,6 @@
 export default {
   name: "MySelect",
   props: {
-    // modelValue: {
-    //   type: String,
-    // },
     options: {
       type: Array,
       default: () => [],
@@ -44,11 +41,12 @@ select {
   height: 40px;
   color: #5989e9;
   text-align: center;
+  cursor:pointer;
 }
 option{
-  display: flex;
-  /* text-align: center; */
-  align-items: center;
+  text-align: left;
+ 
+  
 }
 
 </style>

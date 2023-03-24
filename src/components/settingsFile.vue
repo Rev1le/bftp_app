@@ -91,10 +91,10 @@ export default {
       }
     },
     getOpacity(){
-      if(!this.dimension && this.partWeight !== 0){
+      if(this.dimension==0 ){
         return this.partWeight/1024 -0.4
       }
-      else if (this.partWeight !== 0) {
+      else if (this.dimension!= 0) {
         return this.partWeight/10 -0.4
       }
       else {
@@ -106,6 +106,7 @@ export default {
   watch: {
     dimension(val) {
       this.partWeight = 0;
+      // console.log("выбор ",this.dimension,this.partWeight,"WATCH")
     },
   },
 };

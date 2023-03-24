@@ -3,7 +3,7 @@
     <div class="conten-center">
       <dragAndDrop></dragAndDrop>
     </div>
-    <button>Собрать файл</button>
+    <button>Собрать файл!</button>
   </div>
 </template>
 
