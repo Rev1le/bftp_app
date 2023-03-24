@@ -7,8 +7,8 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "bftp_app",
-    "version": "0.0.0"
+    "productName": "FileSeparation",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -52,7 +52,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "bf11c02cb6f16bfe709bcd727892ce51",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

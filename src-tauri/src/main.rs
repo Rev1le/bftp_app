@@ -4,8 +4,36 @@
 )]
 
 use std::path;
+use tauri::Manager;
 use big_file_to_parts as BTF;
 use big_file_to_parts::Options;
+
+pub fn set_shadow(
+    window: impl raw_window_handle::HasRawWindowHandle,
+    enable: bool,
+) -> () {
+	    match window.raw_window_handle() {
+
+        raw_window_handle::RawWindowHandle::Win32(handle) => {
+            use windows_sys::Win32::{
+                Graphics::Dwm::DwmExtendFrameIntoClientArea, UI::Controls::MARGINS,
+            };
+
+            let m = if enable { 1 } else { 0 };
+            let margins = MARGINS {
+                cxLeftWidth: m,
+                cxRightWidth: m,
+                cyTopHeight: m,
+                cyBottomHeight: m,
+            };
+            unsafe {
+                DwmExtendFrameIntoClientArea(handle.hwnd as _, &margins);
+            };
+            ()
+        }
+        _ => return,
+    }
+}
 
 #[tauri::command]
 async fn encode_file(file_path: String, path_for_save: String) -> Result<(), String> {
@@ -35,8 +63,18 @@ async fn decode_file(file_path: String, path_for_save: String) -> Result<(), Str
     Ok(())
 }
 
+pub fn get_me() -> String {
+	String::from("Hi Man")
+}
+
 fn main() {
     tauri::Builder::default()
+		.setup(|app| {
+			//app.emit_all("test-event", get_me());
+			let window = app.get_window("main").unwrap();
+            set_shadow(&window, true);
+            Ok(())
+		})
         .invoke_handler(tauri::generate_handler![encode_file, decode_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
