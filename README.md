@@ -1,7 +1,16 @@
-# Tauri + Vanilla
-
-This template should help get you started developing with Tauri in vanilla HTML, CSS and Javascript.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+## Клонирование проекта
+```sh
+git clone --recurse-submodules https://github.com/Rev1le/bftp_app
+cd  bftp_app
+```
+## Установите и запустите DEV режим клиента
+```sh
+npm i
+npm run tauri dev
+```
+## Сборка клиента
+```sh
+npm i
+npm run tauri build
+```
+Проект распологается по пути .src-tauri/target/release/bftp_app.exe
