@@ -8,7 +8,7 @@
     />
 
     <div class="navbar_btns">
-      <button
+      <!-- <button
         class="btn"
         @click="splitFilePage"
         :class="{ 'btn-active': activeSplit }"
@@ -22,7 +22,16 @@
         :class="{ 'btn-active': !activeSplit }"
       >
         Собрать файл
-      </button>
+      </button> -->
+      <input id="split" name="nav" type="radio" value="0" checked />
+      <label @click="$router.push('/')" class="btn" for="split"
+        >Разбить файл</label
+      >
+
+      <input id="join" name="nav" type="radio" value="1" />
+      <label @click="$router.push('/join')" class="btn" for="join"
+        >Собрать файл</label
+      >
     </div>
     <div class="window_btns">
       <font-awesome-icon
@@ -43,10 +52,10 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
 import { appWindow } from "@tauri-apps/api/window";
-import { event } from "@tauri-apps/api";
+// import { event } from "@tauri-apps/api";
 export default {
   data() {
     return {
@@ -64,23 +73,20 @@ export default {
       appWindow.close();
     },
 
-    splitFilePage(event) {
-      if (event.target.id === "join") {
-        this.activeSplit = false;
-      } else {
-        this.activeSplit = true;
-      }
-      this.$router.push(`/${event.target.id}`);
-    },
-
-    joinFilePage() {
-      this.$router.push("/join");
-    },
+   
   },
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
+input[type="radio"] {
+  display: none;
+}
+input[type="radio"]:checked + .btn,
+.btn:hover {
+  border-bottom: 2px solid #5989e9;
+}
+
 .nav_img {
   width: 32px;
 }
@@ -94,11 +100,17 @@ export default {
   margin-left: 15px;
   color: #5989e9;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .window_btn:hover {
   color: #456ab4;
   transform: scale(1.2);
+}
+
+.window_btn:active {
+  color: #456ab4;
+  transform: translateY(5px);
 }
 
 .window_btns {
@@ -114,22 +126,18 @@ export default {
   align-items: center;
   height: 50px;
   align-items: center;
- 
 }
 
 .btn {
-  padding: 0;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  padding: 5px 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  padding: 5px;
+  border-bottom: 2px solid transparent;
   font-size: 15px;
   background: none;
   font-weight: bold;
   color: #5989e9;
   margin-right: 15px;
-}
-.btn-active {
-  transition: all 0.3s ease;
-  border: 1px solid rgb(190, 190, 190);
+  cursor: pointer;
 }
 </style>

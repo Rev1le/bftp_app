@@ -20,7 +20,7 @@
 
 <script>
 import dragAndDropItem from "./dragAndDropItem.vue";
-import dAndDMix from "../mixins/dAndDMix";
+import dAndDMix from "../mixins/mixinDragAndDrop";
 
 export default {
   mixins:[dAndDMix],
@@ -46,6 +46,7 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  margin-top:5px;
 }
 .files * {
 

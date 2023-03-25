@@ -7,11 +7,13 @@ const routes = [
   {
     path: '/',
     component: breakFile,
+    meta: { transition: 'slide-left' },
    
   },
   {
     path: '/join',
-    component: joinFile,   
+    component: joinFile,
+    meta: { transition: 'slide-right' },   
   },
  
 ]

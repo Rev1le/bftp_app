@@ -18,12 +18,13 @@
         :max="options[dimension].max"
         :step="options[dimension].step"
         v-model.number="partWeight"
-        style="width: 100%"
+        style="width: 100%; margin-bottom: 5%;"
       />
 
       <div class="part-text">
         одна часть будет равна
         <span class="part-text-big">{{ partWeight }}</span>
+    
         {{ options[dimension].name2 }}
       </div>
     </div>
@@ -43,11 +44,13 @@ import ButtonsMix from "../mixins/ButtonsMix";
 import { invoke } from "@tauri-apps/api";
 import twoButtons from "./twoButtons.vue";
 
+
 export default {
   mixins: [ButtonsMix],
   components: {
     mySelect,
     twoButtons,
+   
    
   },
   props: {
@@ -134,6 +137,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   width: 100%;
   height: 100%;
   max-height: 500px;
