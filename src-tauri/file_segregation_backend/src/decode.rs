@@ -138,6 +138,8 @@ pub fn decode_file(path: &PathBuf, path_for_save: PathBuf) -> Result<(), DecodeE
             part.part_file.read_to_end(&mut bytes_part)?;
 
             output_file.write(&bytes_part)?;
+			// Создание евента для frontend
+			let _ = window.emit("decode://progress", format!("Часть: {} собрана", part_ind+1));
             Ok::<(), DecodeErrors>(())
         })
         .all(|res|

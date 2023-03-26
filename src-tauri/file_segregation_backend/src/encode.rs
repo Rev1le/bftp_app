@@ -98,6 +98,7 @@ pub fn encode_file<R: Runtime>(path: &PathBuf, options: crate::Options, window: 
             &path_for_save
         )?;
 
+		// Создание евента для frontend
         let _ = window.emit("encode://progress", PayLoadPart {
             part_uuid: composite_file.uuid_parts.clone(),
             number_part,

@@ -4,10 +4,12 @@
 )]
 
 use std::path;
-use tauri::Manager;
+use serde::{Deserialize, Serialize};
+use tauri::{Manager, Runtime, Window};
 use big_file_to_parts as BTF;
 use big_file_to_parts::Options;
 
+/// Тень от окна
 pub fn set_shadow(
     window: impl raw_window_handle::HasRawWindowHandle,
     enable: bool,
@@ -35,36 +37,35 @@ pub fn set_shadow(
     }
 }
 
+/// Кодирование файла
 #[tauri::command]
-async fn encode_file(file_path: String, path_for_save: String) -> Result<(), String> {
-    let option = Options {
-        path_for_save: Some(path::PathBuf::from(path_for_save)),
-        ..Options::default()
-    };
-    let config = BTF::Config::new('e', &file_path, option);
+async fn encode_file<R: Runtime>(file_path: String, options: Options, window: Window<R>) -> Result<(), String> {
 
-    if let Err(e) = BTF::encode::encode_file(&config.path, config.options) {
+    let config = BTF::Config::new('e', &file_path, options);
+
+    if let Err(e) = BTF::encode::encode_file(&config.path, config.options, window) {
         return Err(format!("{:?}", e));
     }
+
     Ok(())
 }
 
+/// Декодирование файла
 #[tauri::command]
-async fn decode_file(file_path: String, path_for_save: String) -> Result<(), String> {
-    let option = Options {
-        path_for_save: Some(path::PathBuf::from(path_for_save)),
-        ..Options::default()
-    };
-    let config = BTF::Config::new('e', &file_path, option);
+async fn decode_file(file_path: String, options: Options) -> Result<(), String> {
+
+    let config = BTF::Config::new('d', &file_path, options);
 
     if let Err(e) = BTF::decode::decode_file(&config.path, config.options.path_for_save.unwrap_or(path::PathBuf::new())) {
         return Err(format!("{:?}", e));
     }
+
     Ok(())
 }
 
-pub fn get_me() -> String {
-	String::from("Hi Man")
+#[tauri::command]
+async fn get_me(options: Options) {
+	println!("{:?}", options);
 }
 
 fn main() {
@@ -75,7 +76,7 @@ fn main() {
             set_shadow(&window, true);
             Ok(())
 		})
-        .invoke_handler(tauri::generate_handler![encode_file, decode_file])
+        .invoke_handler(tauri::generate_handler![encode_file, decode_file, get_me])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
