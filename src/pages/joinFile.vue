@@ -5,6 +5,7 @@
         Файл собирается, пожалуйста подожтите. <br />(►__◄)
       </h1>
     </MyDialog>
+    <progressBar></progressBar>
     <div class="conten-center">
       <dragAndDrop v-model:fileName="fileName"></dragAndDrop>
     </div>
@@ -23,6 +24,7 @@ import dragAndDrop from "../components/dragAndDrop.vue";
 import twoButtons from "../components/twoButtons.vue";
 import ButtonsMix from "../mixins/ButtonsMix";
 import MyDialog from "../components/MyDialog.vue";
+import progressBar from "../components/progressBar.vue";
 import { invoke } from "@tauri-apps/api";
 export default {
   mixins: [ButtonsMix],
@@ -30,6 +32,7 @@ export default {
     dragAndDrop,
     twoButtons,
     MyDialog,
+    progressBar,
   },
   data() {
     return {

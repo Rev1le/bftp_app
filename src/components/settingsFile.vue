@@ -11,8 +11,9 @@
     
     <div class="settings-part">
       <mySelect :options="options" v-model="dimension"></mySelect>
+      <!-- <inputRange :maxStep="options[dimension].max" :number="partWeight" :step="options[dimension].step" @changeRange="changeRange"></inputRange> -->
 
-      <input
+      <input class="range"
         type="range"
         min="0"
         :max="options[dimension].max"
@@ -43,14 +44,15 @@ import mySelect from "./mySelect.vue";
 import ButtonsMix from "../mixins/ButtonsMix";
 import { invoke } from "@tauri-apps/api";
 import twoButtons from "./twoButtons.vue";
-
+// import inputRange from "./inputRange.vue";
 
 export default {
   mixins: [ButtonsMix],
   components: {
     mySelect,
     twoButtons,
-   
+    // inputRange,
+
    
   },
   props: {
@@ -80,6 +82,9 @@ export default {
     };
   },
   methods: {
+    // changeRange(range){
+    //   this.partWeight = range;
+    // },
     async confrimSettings() {
       if (this.partWeight) {
         if (
@@ -130,6 +135,10 @@ export default {
 </script>
 
 <style scoped>
+
+
+
+
 .settings {
   padding: 15px;
   border-radius: 5px;
@@ -169,4 +178,7 @@ span {
 input:hover {
   cursor: grab;
 }
+
+
+
 </style>
