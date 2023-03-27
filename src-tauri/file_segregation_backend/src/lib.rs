@@ -10,6 +10,8 @@ use std::{
     path::{Path, PathBuf}
 };
 
+use serde::{Serialize, Deserialize};
+
 pub mod decode;
 pub mod encode;
 
@@ -37,7 +39,7 @@ pub struct Config {
 }
 
 #[allow(dead_code)]
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Options {
 	pub path_for_save: Option<PathBuf>,
     pub count_parts: Option<u8>,
