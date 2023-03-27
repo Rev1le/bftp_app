@@ -46,16 +46,20 @@ pub fn encode_file<R: Runtime>(path: &PathBuf, options: crate::Options, window: 
         panic!("Предоставьте путь к файлу")
     }
 
-	let path_for_save = options.path_for_save.unwrap_or(PathBuf::new());
+	let path_for_save = dbg!(options.path_for_save.unwrap_or(PathBuf::new()));
 	
 	if !path_for_save.is_dir() {
-		return Err(EncodeErrors::PathParseError);
+		return dbg!(Err(EncodeErrors::PathParseError));
 	}
+	let file = File::open(&path)?;
 	
     let mut size_part = options.part_size.unwrap_or(1_073_741_824_usize);
-    let mut f  = BufReader::with_capacity(
+    
+	let _ = window.emit("encode://count_parts", file.metadata().unwrap().len()/(size_part as u64));
+	
+	let mut f  = BufReader::with_capacity(
         size_part,
-        File::open(&path)?
+        file
     );
 
     let mut composite_file = CompositeFile {
@@ -79,6 +83,7 @@ pub fn encode_file<R: Runtime>(path: &PathBuf, options: crate::Options, window: 
     let mut number_part = 1;
 
     while f.has_data_left()? {
+		println!("1 + часть{}", number_part);
 		
 		if number_part > max_count_parts {
 			println!(
@@ -91,12 +96,14 @@ pub fn encode_file<R: Runtime>(path: &PathBuf, options: crate::Options, window: 
         let buffer_bytes = f.fill_buf()?;
         let buffer_bytes_len = buffer_bytes.len();
 
+		println!("2 + часть{}", number_part);
         let part = encode_part(
             &composite_file.uuid_parts,
             number_part,
             buffer_bytes,
             &path_for_save
         )?;
+		println!("3 + часть{}", number_part);
 
 		// Создание евента для frontend
         let _ = window.emit("encode://progress", PayLoadPart {
@@ -105,10 +112,12 @@ pub fn encode_file<R: Runtime>(path: &PathBuf, options: crate::Options, window: 
             part_file_name: part.part_file_name.clone(),
             path_for_save: path_for_save.display().to_string(),
         });
+		println!("4 + часть{}", number_part);
         composite_file.parts.push(part);
 
         number_part += 1;
         f.consume(buffer_bytes_len);
+		println!("5 + часть{}", number_part);
     }
 
     encode_metafile(&composite_file, &path_for_save)?;
@@ -121,14 +130,10 @@ fn encode_part(part_uuid: &str, part_number: u8, data: &[u8], path_for_save: &Pa
     let part_file_name = format!("{}_{}.part", part_uuid, part_number);
     let hash_bytes = md5::compute(&part_file_name).0.to_vec();
 
-    let part_bytes = vec![hash_bytes.as_slice(), data]
-        .into_iter()
-        .flatten()
-        .copied()
-        .collect::<Vec<u8>>();
-
     let mut part_file = File::create_new(format!("{}{}", path_for_save.display(), &part_file_name))?;
-    part_file.write(&part_bytes)?;
+    part_file.write_all(&hash_bytes.as_slice())?;
+	part_file.write_all(&data)?;
+	part_file.flush()?;
 
     println!("Файл с частью данными был создан => {}{}", path_for_save.display(), &part_file_name);
 

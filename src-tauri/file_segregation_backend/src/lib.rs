@@ -38,7 +38,6 @@ pub struct Config {
     pub options: Options
 }
 
-#[allow(dead_code)]
 #[derive(Debug, Default, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Options {
 	pub path_for_save: Option<PathBuf>,

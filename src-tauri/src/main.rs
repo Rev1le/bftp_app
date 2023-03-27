@@ -43,7 +43,7 @@ async fn encode_file<R: Runtime>(file_path: String, options: Options, window: Wi
 
     let config = BTF::Config::new('e', &file_path, options);
 
-    if let Err(e) = BTF::encode::encode_file(&config.path, config.options, window) {
+    if let Err(e) = BTF::encode::encode_file(&config.path, dbg!(config.options), window) {
         return Err(format!("{:?}", e));
     }
 
@@ -55,6 +55,8 @@ async fn encode_file<R: Runtime>(file_path: String, options: Options, window: Wi
 async fn decode_file<R: Runtime>(file_path: String, options: Options, window: Window<R>) -> Result<(), String> {
 
     let config = BTF::Config::new('d', &file_path, options);
+
+
 
     if let Err(e) = BTF::decode::decode_file(&config.path, config.options.path_for_save.unwrap_or(path::PathBuf::new()), window) {
         return Err(format!("{:?}", e));
