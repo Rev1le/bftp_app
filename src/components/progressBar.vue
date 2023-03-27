@@ -8,10 +8,11 @@
 
 <script>
 export default {
-    data(){
-        return{
-            progress:50,
-        }
+    props:{
+      progress:{
+        type:Number,
+        default:0,
+      }
     }
 }
 </script>
@@ -19,8 +20,8 @@ export default {
 <style scoped>
 .shell {
   height: 20px;
-  width: 350px;
-  border: 1px solid #aaa;
+  width: 100%;
+  border: 1px solid linear-gradient(to right, #5989e9, #b993d6db); 
   border-radius: 13px;
   box-sizing: content-box;
   padding: 3px;

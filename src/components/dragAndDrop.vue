@@ -5,7 +5,7 @@
       :iconDrop="iconDrop"
       @openFile="openFile"
     ></dragAndDropItem>
-    <div class="files" :class="{ 'active-files': iconDrop }" :style="[iconDrop? {minHeight:25+'px'} : {height:0}]">
+    <div class="files" :class="{ 'active-files': iconDrop }" >
       <font-awesome-icon class="upload-icon-drop" :icon="['far', 'file']" />
       <span class="upload-icon-drop">{{ fileName }}</span>
       <font-awesome-icon
@@ -46,19 +46,25 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top:5px;
+  margin:5px 0 5px 0;
+  height: 0;
+  transition: all 0.7s ease;
+  opacity: 0;
+  transform: translateX(-150px);
 }
 .files * {
-
   margin-right: 10px;
 }
-.active-files .upload-icon-drop {
+.active-files{
+  transform: translateX(0px);
+  height: auto;
   opacity: 1;
+  transition: all 0.7s ease;
 }
+
 .upload-icon-drop {
   font-size: 20px;
   transition: all ease 0.3s;
-  opacity: 0;
   color: #5989e9;
 }
 span {

@@ -8,24 +8,24 @@
         '))',
     }"
   >
-    
     <div class="settings-part">
       <mySelect :options="options" v-model="dimension"></mySelect>
       <!-- <inputRange :maxStep="options[dimension].max" :number="partWeight" :step="options[dimension].step" @changeRange="changeRange"></inputRange> -->
 
-      <input class="range"
+      <input
+        class="range"
         type="range"
         min="0"
         :max="options[dimension].max"
         :step="options[dimension].step"
         v-model.number="partWeight"
-        style="width: 100%; margin-bottom: 5%;"
+        style="width: 100%; margin-bottom: 5%"
       />
 
       <div class="part-text">
         одна часть будет равна
         <span class="part-text-big">{{ partWeight }}</span>
-    
+
         {{ options[dimension].name2 }}
       </div>
     </div>
@@ -42,25 +42,19 @@
 <script>
 import mySelect from "./mySelect.vue";
 import ButtonsMix from "../mixins/ButtonsMix";
-import { invoke } from "@tauri-apps/api";
 import twoButtons from "./twoButtons.vue";
-// import inputRange from "./inputRange.vue";
 
 export default {
   mixins: [ButtonsMix],
   components: {
     mySelect,
     twoButtons,
-    // inputRange,
-
-   
   },
   props: {
     fileName: "",
   },
   data() {
     return {
-      
       partWeight: 0,
       dimension: 0,
       options: [
@@ -82,63 +76,53 @@ export default {
     };
   },
   methods: {
-    // changeRange(range){
-    //   this.partWeight = range;
-    // },
     async confrimSettings() {
-      if (this.partWeight) {
-        if (
-          this.dimension == 0 &&
-          this.fileName != "" &&
-          this.getNewDirectory
-        ) {
-          this.$emit("showModal");
-          await invoke("encode_file", {
-            filePath: this.fileName,
-            pathForSave: this.getNewDirectory,
-          }).finally(() => {
-            this.$emit("update:fileName", '')
-            this.$emit("showModal");
-            this.newDirectory = "";
-            this.partWeight = 0;
-          });
-
-          console.log(this.partWeight * 1024 * 1024, this.fileName);
-        } else if (this.fileName != "" && this.getNewDirectory) {
-          console.log(this.partWeight * 1024 * 1024 * 1024, this.fileName);
-        } else {
-          alert("Заполните все поля");
-        }
-      } else {
+      if (!this.partWeight) {
         alert("Часть должна быть больше нуля!");
+        return;
       }
+      if (this.fileName == "" || !this.getNewDirectory) {
+        alert("Заполните все поля");
+        return;
+      }
+      let args = {
+        filePath: this.fileName,
+        options: {
+          path_for_save: this.getNewDirectory,
+          count_parts: null,
+          part_size: this.partWeight * 1024 * 1024,
+          compressed: null,
+        },
+      };
+      if (this.dimension == 0) {
+        this.$emit("splitFileRun", args);
+      } else {
+        args.options.part_size = args.options.part_size * 1024;
+        this.$emit("splitFileRun", args);
+      }
+      this.newDirectory = "";
+      this.partWeight = 0;
     },
   },
   computed: {
     getOpacity() {
       if (this.dimension == 0) {
-        return this.partWeight / 1024 - 0.3;
+        return this.partWeight / 1024 - 0.2;
       } else if (this.dimension != 0) {
-        return this.partWeight / 10 - 0.3;
-      } 
+        return this.partWeight / 10 - 0.2;
+      }
       return 0;
-  
     },
   },
   watch: {
     dimension(val) {
       this.partWeight = 0;
-     
     },
   },
 };
 </script>
 
 <style scoped>
-
-
-
-
 .settings {
   padding: 15px;
   border-radius: 5px;
@@ -146,7 +130,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   width: 100%;
   height: 100%;
   max-height: 500px;
@@ -178,7 +161,4 @@ span {
 input:hover {
   cursor: grab;
 }
-
-
-
 </style>

@@ -1,12 +1,12 @@
 <template>
-    <wrapFlex></wrapFlex>
+    <splitFile></splitFile>
 </template>
 
 <script>
-import wrapFlex from '../components/wrapFlex.vue' 
+import splitFile from '../components/splitFile.vue' 
 export default {
     components:{
-        wrapFlex,
+        splitFile,
     }
 
 }
