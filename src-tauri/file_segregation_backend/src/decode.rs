@@ -123,6 +123,8 @@ pub fn decode_file<R: Runtime>(path: &PathBuf, path_for_save: PathBuf, window: W
         );
         std::process::exit(2)
     }
+	
+	let _ = window.emit("decode://count_parts", count_parts);
 
     parts_hashes
         .chunks(16)
