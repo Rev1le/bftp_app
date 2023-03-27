@@ -6,6 +6,8 @@ use std::{
 };
 use std::string::FromUtf8Error;
 
+use tauri::{Window, Runtime};
+
 use crate::{CompositeFile, FilePart};
 
 struct MetaFile {
@@ -81,7 +83,7 @@ fn decode_str<T: DecodeType + Into<usize>>(iter: &mut impl Iterator<Item=u8>) ->
     Ok(String::from_utf8(output_str_bytes)?)
 }
 
-pub fn decode_file(path: &PathBuf, path_for_save: PathBuf) -> Result<(), DecodeErrors> {
+pub fn decode_file<R: Runtime>(path: &PathBuf, path_for_save: PathBuf, window: Window<R>) -> Result<(), DecodeErrors> {
 
     if !path.is_file() {
         println!(

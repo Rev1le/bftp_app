@@ -17,7 +17,7 @@ tauri-build = { version = "1.2", features = [] }
 
 [dependencies]
 raw-window-handle = "0.5"
-big_file_to_parts = {path = "../src-tauri/big_file_to_parts"}
+file_segregation_backend = {path = "../src-tauri/file_segregation_backend"}
 serde_json = "1.0"
 windows-sys = {features = ["Win32_Graphics_Dwm", "Win32", "Win32_UI", "Win32_Graphics", "Win32_UI_Controls"] }
 serde = { version = "1.0", features = ["derive"] }
