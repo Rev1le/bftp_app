@@ -55,7 +55,7 @@ pub fn encode_file<R: Runtime>(path: &PathBuf, options: crate::Options, window: 
 	
     let mut size_part = options.part_size.unwrap_or(1_073_741_824_usize);
     
-	let _ = window.emit("encode://count_parts", file.metadata().unwrap().len()/(size_part as u64));
+	let _ = window.emit("encode://count_parts", file.metadata().unwrap().len()/(size_part as u64) + 1);
 	
 	let mut f  = BufReader::with_capacity(
         size_part,

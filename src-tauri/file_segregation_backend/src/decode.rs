@@ -35,6 +35,11 @@ impl From<std::string::FromUtf8Error> for DecodeErrors {
     }
 }
 
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct PayLoadPart {
+    number_part: u8,
+}
+
 
 #[derive(Debug)]
 struct HashPart([u8;16]);
@@ -143,7 +148,7 @@ pub fn decode_file<R: Runtime>(path: &PathBuf, path_for_save: PathBuf, window: W
 
             output_file.write(&bytes_part)?;
 			// Создание евента для frontend
-			let _ = window.emit("decode://progress", format!("Часть: {} собрана", part_ind+1));
+			let _ = window.emit("decode://progress", PayLoadPart{number_part: (part_ind+1) as u8});
             Ok::<(), DecodeErrors>(())
         })
         .all(|res|

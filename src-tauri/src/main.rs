@@ -5,7 +5,7 @@
 
 use std::path;
 use serde::{Deserialize, Serialize};
-use tauri::{Manager, Runtime, Window};
+use tauri::{Manager, Runtime, Window, Size, PhysicalSize};
 use file_segregation_backend as BTF;
 use file_segregation_backend::Options;
 
@@ -76,6 +76,14 @@ fn main() {
 			//app.emit_all("test-event", get_me());
 			let window = app.get_window("main").unwrap();
             set_shadow(&window, true);
+			window.set_min_size(Some(
+				Size::Physical(
+					PhysicalSize{
+						width: 600, 
+						height: 800
+					}
+				)
+			));
             Ok(())
 		})
         .invoke_handler(tauri::generate_handler![encode_file, decode_file, get_me])
