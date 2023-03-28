@@ -27,6 +27,9 @@ export default {
   components: {
     dragAndDropItem,
   },
+  // props:{
+  //   join:false,
+  // },
   watch:{
     fileName(val){
       if (val!=""){

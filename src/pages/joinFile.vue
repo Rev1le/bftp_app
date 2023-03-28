@@ -1,13 +1,16 @@
 <template>
   <div class="pad join" style="">
-    <MyDialog v-model:show="isLoading">
-      <h1 style="text-align: center">
-        Файл собирается, пожалуйста подожтите. <br />(►__◄)
-      </h1>
-    </MyDialog>
-    <progressBar></progressBar>
+    <!-- <MyDialog :show="isLoading">
+      <div class="center-content">
+      <h1 style="text-align: center; margin-bottom: 20px;">Файл разбивается, пожалуйста подождите.</h1>
+      <img style="width: 80%;" src="../assets/cat.gif" alt="">
+     
+      <progressBar :progress="precent" ></progressBar>
+    </div>
+    </MyDialog> -->
+    <loadWindow :precent="precent" :show="isLoading"></loadWindow>
     <div class="conten-center">
-      <dragAndDrop v-model:fileName="fileName"></dragAndDrop>
+      <dragAndDrop v-model:fileName="fileName" :join="true"></dragAndDrop>
     </div>
     <twoButtons
       btnOne="Выберете директорию"
@@ -23,15 +26,17 @@
 import dragAndDrop from "../components/dragAndDrop.vue";
 import twoButtons from "../components/twoButtons.vue";
 import ButtonsMix from "../mixins/ButtonsMix";
-import MyDialog from "../components/MyDialog.vue";
+import loadWindow from "../components/loadWindow.vue";
 import progressBar from "../components/progressBar.vue";
+import eventsMix from "../mixins/eventsMix";
 import { invoke } from "@tauri-apps/api";
+import { listen as tauriListen } from "@tauri-apps/api/event";
 export default {
-  mixins: [ButtonsMix],
+  mixins: [ButtonsMix, eventsMix ],
   components: {
     dragAndDrop,
     twoButtons,
-    MyDialog,
+    loadWindow,
     progressBar,
   },
   data() {
@@ -41,25 +46,38 @@ export default {
     };
   },
   methods: {
+    showModal(){
+      this.isLoading = !this.isLoading;
+    },
     async joinFileByMeta() {
       if (this.fileName != "" && this.getNewDirectory) {
         this.isLoading = true;
-        await invoke("decode_file", {
-          filePath: this.fileName,
-          pathForSave: this.getNewDirectory,
-        }).then(() => {
+        let args = {
+        filePath: this.fileName,
+        options: {
+          path_for_save: this.getNewDirectory,
+          count_parts: null,
+          part_size: null,
+          compressed: null,
+        },
+      }
+        await invoke("decode_file", args).then(() => {
           this.isLoading = false;
           alert(
             `Процесс завершён!\nВы найдёте файл по пути: ${this.newDirectory}`
           );
-          this.newDirectory = "";
-          this.fileName = "";
+          this.precent=this.countParts=0;
+          this.newDirectory = this.fileName = "";
         });
       } else {
         alert("ВЫБЕРИТЕ META ФАЙЛ или путь сохранения собранного файла!");
       }
     },
   },
+  async mounted(){
+        await tauriListen("decode://count_parts", this.setCountParts);
+        await tauriListen("decode://progress", this.setPrecent);
+      },
 };
 </script>
 

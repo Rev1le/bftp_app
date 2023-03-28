@@ -12,6 +12,7 @@ export default{
               directory: true,
               multiple: true,
               defaultPath: "/",
+              
             });
           },
     },

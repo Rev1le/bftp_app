@@ -1,11 +1,6 @@
 <template>
   <div class="wrap-grid pad">
-    <MyDialog :show="isLoading">
-      <div class="center-content">
-      <h1 style="text-align: center; margin-bottom: 20px;">Файл разбивается, пожалуйста подождите. <br />(►__◄)</h1>
-      <progressBar :progress="precent" ></progressBar>
-    </div>
-    </MyDialog>
+    <loadWindow :precent="precent" :show="isLoading"></loadWindow>
     <dragAndDrop v-model:fileName="fileName" ></dragAndDrop>
     <div class="options-wrap">
       <settingsFile v-model:fileName="fileName" @splitFileRun="splitFileRun"></settingsFile>
@@ -14,21 +9,21 @@
 </template>
 
 <script>
-import MyDialog from "./MyDialog.vue";
+
 import dragAndDrop from "./dragAndDrop.vue";
 import settingsFile from "./settingsFile.vue";
-import progressBar from "../components/progressBar.vue";
+
 import eventsMix from "../mixins/eventsMix";
 import { invoke } from "@tauri-apps/api";
-
+import { listen as tauriListen } from "@tauri-apps/api/event";
+import loadWindow from "./loadWindow.vue";
 export default {
   name: "wrap-grid",
   mixins: [eventsMix],
   components: {
     dragAndDrop,
     settingsFile,
-    MyDialog,
-    progressBar,
+    loadWindow,
   },
   data(){
     return{
@@ -54,6 +49,10 @@ export default {
         });
       } 
     },
+    async mounted(){
+        await tauriListen("encode://count_parts", this.setCountParts);
+        await tauriListen("encode://progress", this.setPrecent);
+      },
 };
 </script>
 

@@ -10,7 +10,6 @@
   >
     <div class="settings-part">
       <mySelect :options="options" v-model="dimension"></mySelect>
-      <!-- <inputRange :maxStep="options[dimension].max" :number="partWeight" :step="options[dimension].step" @changeRange="changeRange"></inputRange> -->
 
       <input
         class="range"
@@ -19,16 +18,16 @@
         :max="options[dimension].max"
         :step="options[dimension].step"
         v-model.number="partWeight"
-        style="width: 100%; margin-bottom: 5%"
+        style="width: 100%"
       />
-
-      <div class="part-text">
-        одна часть будет равна
-        <span class="part-text-big">{{ partWeight }}</span>
-
-        {{ options[dimension].name2 }}
-      </div>
     </div>
+    <div class="part-text">
+      одна часть будет равна
+      <span class="part-text-big">{{ partWeight }}</span>
+
+      {{ options[dimension].name2 }}
+    </div>
+
     <twoButtons
       btnOne="Выберете директорию"
       btnTwo="Разбить файл!"
@@ -146,7 +145,7 @@ span {
 }
 .part-text {
   display: flex;
-
+  font-size: 1.4em;
   width: 100%;
   justify-content: space-evenly;
   flex-direction: column;

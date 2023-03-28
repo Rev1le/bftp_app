@@ -1,28 +1,12 @@
 <template>
   <div data-tauri-drag-region class="Navbar-vue">
     <img
-      @click="$router.push('/')"
       class="nav_img"
       src="@/assets/logo.png"
       alt=""
     />
 
     <div class="navbar_btns">
-      <!-- <button
-        class="btn"
-        @click="splitFilePage"
-        :class="{ 'btn-active': activeSplit }"
-      >
-        Разбить файл
-      </button>
-      <button
-        class="btn"
-        id="join"
-        @click="splitFilePage"
-        :class="{ 'btn-active': !activeSplit }"
-      >
-        Собрать файл
-      </button> -->
       <input id="split" name="nav" type="radio" value="0" checked />
       <label @click="$router.push('/')" class="btn" for="split"
         >Разбить файл</label

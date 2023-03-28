@@ -8,58 +8,75 @@
 
 <script>
 export default {
-    props:{
-      progress:{
-        type:Number,
-        default:0,
-      }
-    }
-}
+  props: {
+    progress: {
+      type: Number,
+      default: 0,
+    },
+  },
+};
 </script>
 
 <style scoped>
 .shell {
   height: 20px;
   width: 100%;
-  border: 1px solid linear-gradient(to right, #5989e9, #b993d6db); 
+  border: 1px solid #5989e9;
   border-radius: 13px;
   box-sizing: content-box;
   padding: 3px;
- 
 }
 
 .bar {
-    background: linear-gradient(270deg, #b993d6, #8ca6db);
-    background-size: 200% 200%;
+  background: linear-gradient(270deg, #b993d6, #8ca6db);
+  background-size: 200% 200%;
   height: 20px;
   width: 15px;
   border-radius: 9px;
   transition: all 0.5s ease;
   padding: 0;
-  -webkit-animation: barberpole 1.5s ease infinite;
-    -moz-animation: barberpole 1.5s ease infinite;
-    animation: barberpole 1.5s ease infinite;
+  -webkit-animation: barberpole 1s ease infinite;
+  -moz-animation: barberpole 1s ease infinite;
+  animation: barberpole 1s ease infinite;
 }
 .bar span {
-    background: none;
-    float: right;
-    padding: 4px 5px;
-    color: #fff;
-    font-size: 0.7em
+  background: none;
+  float: right;
+  padding: 4px 5px;
+  color: #fff;
+  font-size: 0.7em;
+}
+@-webkit-keyframes barberpole {
+  0% {
+    background-position: 0% 50%;
   }
-  @-webkit-keyframes barberpole {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 @-moz-keyframes barberpole {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 @keyframes barberpole {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}  
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 </style>

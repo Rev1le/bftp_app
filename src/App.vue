@@ -27,12 +27,12 @@ export default {
 }
 
 .slide-left-enter-from,  .slide-right-leave-to  {
-  transform: translateX(-40%);
+  transform: translateX(-60%);
   opacity: 0;
 }
 
 .slide-right-enter-from, .slide-left-leave-to {
-  transform: translateX(40%);
+  transform: translateX(60%);
   opacity: 0;
 }
 
